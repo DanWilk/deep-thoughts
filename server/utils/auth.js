@@ -11,14 +11,14 @@ module.exports = {
     },
     authMiddleware: function({ req }) {
         //allows the token to be sent via req.body, req.query, or headers
-        let token = req.body.token || req.query.token || req.headers.authorization
-
+        let token = req.body.token || req.query.token || req.headers.authorization;
         // seperate "bearer" from token value
-        if (req.headers.authourization) {
+        if (req.headers.authorization) {
             token = token
             .split(' ')
             .pop()
             .trim();
+            console.log(token);
         }
 
         //if no token, return request object as is
@@ -29,7 +29,7 @@ module.exports = {
         try {
             //decode and attach user data to request object
             const { data } = jwt.verify(token, secret, { maxAge: expiration});
-            req.user = data
+            req.user = data;
         } catch {
             console.log('Invalid token');
         }
